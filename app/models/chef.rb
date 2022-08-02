@@ -3,4 +3,6 @@ class Chef < ApplicationRecord
     validates :chefname, presence: true, length: { minimum:2, maximum: 30}
     validates :email, presence: true
     has_many :recipes
+    has_secure_password
+    validates :password, presence: true, length: { minimum: 5 }
 end
