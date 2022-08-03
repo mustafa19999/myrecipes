@@ -1,5 +1,6 @@
 class ChefsController < ApplicationController
 
+    before_action :set_chef, only: [:show, :edit, :update]
 
     def index
         @chefs=Chef.all
@@ -13,6 +14,7 @@ class ChefsController < ApplicationController
     def create 
         @chef = Chef.new(chef_params)
         if(@chef.save)
+            session[:chef_id] = @chef.id
             flash.alert = "Welcome #{@chef.chefname} to MYrecipes App"
             redirect_to chef_path(@chef)
         else
@@ -22,17 +24,14 @@ class ChefsController < ApplicationController
 
     def show
 
-        @chef = Chef.find(params[:id])
-
     end
 
 
     def edit
-        @chef = Chef.find(params[:id])
+
     end
 
     def update
-        @chef = Chef.find(params[:id])
         if @chef.update(chef_params)
             flash.alert = "Your account was updated"
             redirect_to @chef
@@ -55,5 +54,9 @@ class ChefsController < ApplicationController
         params.require(:chef).permit(:chefname, :email, :password, :password_confirmation)
     end
 
+
+    def set_chef
+        @chef = Chef.find(params[:id])
+    end
 
 end
